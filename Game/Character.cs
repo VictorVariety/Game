@@ -9,7 +9,7 @@ public class Character
     public int Level { get; set; }
     public int Xp { get; set; }
     public int MaxXp { get; set; }
-    public static Weapon? Hand { get; set; }
+    public Weapon Hand { get; set; }
     public object?[] Inventory { get; set; }
 
     public Character(string name, string classs)
@@ -25,7 +25,7 @@ public class Character
         Inventory = new object[3];
     }
 
-    public static Weapon? StartingWeapon(string classs)
+    private static Weapon StartingWeapon(string classs)
     {
         return classs switch
         {
@@ -36,17 +36,6 @@ public class Character
         };
     }
 
-    public static Weapon? GetHandWeapon()
-    {
-        if (Hand is Weapon weapon)
-        {
-            return weapon;
-        }
-        else
-        {
-            return null;
-        }
-    }
     public static void LevelUp(Character you)
     {
         Console.WriteLine($"You leveled up! Max HP increased by 10");

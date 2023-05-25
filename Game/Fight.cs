@@ -29,10 +29,10 @@ public class Fight
         var enemy = opponent.Name.PadRight(30, ' ');
         var opponentHp = ($"Hp: {opponent.Hp}/{opponent.MaxHp}").PadRight(15, ' ');
         var opponentLvl = ("Lvl " + opponent.Level).PadRight(15, ' ');
-        Console.WriteLine($"------------------------------------------------------------" + //60 length
-                          $"{you}{enemy}" +
-                          $"" +
-                          $"{yourHp}{yourLvl}{opponentLvl}{opponentHp}" +
+        Console.WriteLine($"------------------------------------------------------------\n" + //60 length
+                          $"{you}{enemy}\n" +
+                          $"\n" +
+                          $"{yourHp}{yourLvl}{opponentLvl}{opponentHp}\n" +
                           $"------------------------------------------------------------");
         
         
@@ -41,9 +41,9 @@ public class Fight
 
     private static void ShowMoves()
     {
-        Console.WriteLine($"" +
-                          $"1. Attack" +
-                          $"2. Run");
+        Console.WriteLine($"\n" +
+                          $"1. Attack\n" +
+                          $"2. Run\n");
     }
 
     private static void PostFight(Character you, Enemy opponent)
@@ -52,7 +52,7 @@ public class Fight
         var xp = (int)Math.Floor(opponent.Level * 5 + opponent.MaxHp / 4 * opponent.Toughness * opponent.Strength);
         you.Xp += xp;
         Console.Clear();
-        Console.WriteLine($"You defeated the {opponent.Name.ToLower()}" +
+        Console.WriteLine($"You defeated the {opponent.Name.ToLower()}\n" +
                           $"Gained {xp} Exp");
         if (you.Xp >= you.MaxXp) Character.LevelUp(you);
     }
@@ -81,24 +81,27 @@ public class Fight
 
         Console.Clear();
         ShowFightState(you, opponent);
-        Console.WriteLine($"You dealt {playerDamage} to the {opponent.Name.ToLower()}." +
-                          $"While the {opponent.Name.ToLower()} dealt {enemyDamage} to you." +
-                          $"Press any key to continue...");
-        Console.ReadKey();
+        Console.WriteLine($"You dealt {playerDamage} to the {opponent.Name.ToLower()}.\n" +
+                          $"While the {opponent.Name.ToLower()} dealt {enemyDamage} to you.");
+        Character.AnyButtonToContinue();
     }
 
     private static int EnemyDamage(Character you, Enemy opponent)
     {
-        var dealDamage = opponent.Level * opponent.Strength * EnemyEffectiveness(you, opponent);
+        var random = new Random();
+        var randomDamage = random.Next(1, 3 + opponent.Level);
+        var dealDamage = randomDamage + (opponent.Level * opponent.Strength * EnemyEffectiveness(you, opponent));
         return (int)Math.Round(dealDamage);
     }
 
     private static int PlayerDamage(Character you, Enemy opponent)
     {
-        var weapon = Character.GetHandWeapon();
+        var random = new Random();
+        var randomDamage = random.Next(1, 3  +you.Level);
+        var weapon = you.Hand;
         var damage = weapon.Damage - opponent.Toughness;
         if (damage < 1) damage = 1;
-        var dealDamage = you.Level + (damage * Proficiency(you, weapon) * Effectiveness(weapon, opponent));
+        var dealDamage = randomDamage + you.Level + (damage * Proficiency(you, weapon) * Effectiveness(weapon, opponent));
         return (int)Math.Round(dealDamage);
     }
 

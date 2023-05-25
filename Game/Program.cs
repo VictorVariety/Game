@@ -1,8 +1,11 @@
-﻿using Game;
+﻿using System.Runtime.InteropServices.ComTypes;
+using Game;
 
-Console.SetWindowSize(463, 738);
-
-var you = CreateCharacter();
+Character you = null!;
+while (you == null)
+{
+    you = CreateCharacter();
+}
 
 var running = true;
 while (running)
@@ -12,9 +15,10 @@ while (running)
 void MainMenu()
 {
     ClearScreen();
-    Console.WriteLine($"1. Look for adventures" +
-                      $"2. Open inventory" +
-                      $"3. Retire");
+    Console.WriteLine($"What next?\n" +
+                      $"1. Look for adventures\n" +
+                      $"2. Open inventory\n" +
+                      $"3. Retire\n");
     int num = Character.GetNumFromUser(3);
     switch (num)
     {
@@ -31,8 +35,9 @@ void MainMenu()
 }
 void Adventure()
 {
-    Console.WriteLine("You travel towards adventuress directions and end up in" +
-                      "1. The forest" +
+    ClearScreen();
+    Console.WriteLine("You travel towards adventuress directions and end up in\n" +
+                      "1. The forest\n" +
                       "2. The old battlefield");
     var numChoice = Character.GetNumFromUser(2);
     Encounters encounter;
@@ -40,20 +45,33 @@ void Adventure()
     {
         case 1:
             encounter = Encounters.Forest(you.Level);
-            Console.WriteLine($"You arrive in {encounter.Name}" +
-                              $"{encounter.EncounterText}");
-            Console.ReadKey();
-            if(encounter.Enemy != null ) Fight.Combat(you, encounter.Enemy);
 
-            Loot(encounter);
+            ShowEncounterText(encounter);
+            FightAndLoot(encounter);
+
             break;
         case 2:
             encounter = Encounters.OldBattlefield(you.Level);
-            Console.WriteLine($"You arrive in {encounter.Name}" +
-                              $"{encounter.EncounterText}");
+            ShowEncounterText(encounter);
+            FightAndLoot(encounter);
+
             break;
     }
 }
+
+void ShowEncounterText(Encounters encounters)
+{
+    Console.WriteLine($"You arrive in {encounters.Name}\n\n" +
+                      $"{encounters.EncounterText}");
+    Character.AnyButtonToContinue();
+}
+
+void FightAndLoot(Encounters encounters)
+{
+    if (encounters.Enemy != null) Fight.Combat(you, encounters.Enemy);
+    if (encounters.Item != null || encounters.Weapon != null) Loot(encounters);
+}
+
 Character CreateCharacter()
 {
     string? name;
@@ -68,13 +86,14 @@ Character CreateCharacter()
     var type = "";
     while (classCheck)
     {
-        Console.WriteLine($"Are you a" +
-                          $"1. Warrior," +
-                          $"2. Mage or" +
-                          $"3. Rogue?"
+        ClearScreen();
+        Console.WriteLine($"{name} the\n" +
+                          $"1. Warrior.\n" +
+                          $"2. Mage.\n" +
+                          $"3. Rogue."
         );
-
-        switch (Character.GetNumFromUser(3))
+        var choice = Character.GetNumFromUser(3);
+        switch (choice)
         {
             case 1:
                 type = "Warrior";
@@ -96,28 +115,64 @@ Character CreateCharacter()
         ClearScreen();
     }
 
-    Character you = new Character(name, type);
-    Console.WriteLine($"You are {name} the {type}");
+    Console.WriteLine($"You are {name} the {type}\n");
     Console.WriteLine($"Your adventure starts");
-    return you;
+    Character.AnyButtonToContinue();
+    return new Character(name, type);
 }
 
 void Loot(Encounters encounter)
 {
+    var weapon = encounter.Weapon;
     var item = encounter.Item;
-    Console.WriteLine($"You find a {item.Name}" +
-                      $"1. {Items.FindVerb(item)} it." +
+    if (weapon != null)
+    {
+        DecisionForWeapon(weapon, item);
+    }
+
+    if (item != null)
+    {
+        DecisionForItem(item, you);
+    }
+
+}
+
+void DecisionForWeapon(Weapon weapon1, Items items)
+{
+    Console.WriteLine($"You find a {weapon1.Name}\n" +
+                      $"1. {Items.FindVerb(weapon1)} it.\n" +
                       $"2. Put it in your inventory");
-    var choice = Character.GetNumFromUser(2);
-    switch (choice)
+    var i = Character.GetNumFromUser(2);
+    switch (i)
     {
         case 1:
-            Items.UseItem(you, item);
+            Items.UseItem(you, items);
             break;
         case 2:
-            AttemptPickUp(item);
+            AttemptPickUp(items);
             break;
     }
+
+    Character.AnyButtonToContinue();
+}
+
+void DecisionForItem(Items items, Character character)
+{
+    Console.WriteLine($"You find a {items.Name}\n" +
+                      $"1. {Items.FindVerb(items)} it.\n" +
+                      $"2. Put it in your inventory");
+    var i = Character.GetNumFromUser(2);
+    switch (i)
+    {
+        case 1:
+            Items.UseItem(character, items);
+            break;
+        case 2:
+            AttemptPickUp(items);
+            break;
+    }
+
+    Character.AnyButtonToContinue();
 }
 
 void ClearScreen()
