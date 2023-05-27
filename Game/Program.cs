@@ -18,8 +18,8 @@ void MainMenu()
     Console.WriteLine($"What next?\n" +
                       $"1. Look for adventures\n" +
                       $"2. Open inventory\n" +
-                      $"3. Retire\n");
-    int num = Character.GetNumFromUser(3);
+                      $"3. Retire");
+    var num = Character.GetNumFromUser(3);
     switch (num)
     {
         case 1: 
@@ -127,79 +127,72 @@ void Loot(Encounters encounter)
     var item = encounter.Item;
     if (weapon != null)
     {
-        DecisionForWeapon(weapon, item);
+        DecisionForWeapon(weapon);
     }
 
     if (item != null)
     {
-        DecisionForItem(item, you);
+        DecisionForItem(you, item);
     }
 
 }
 
-void DecisionForWeapon(Weapon weapon1, Items items)
+void DecisionForWeapon(Weapon weapon)
 {
-    Console.WriteLine($"You find a {weapon1.Name}\n" +
-                      $"1. {Items.FindVerb(weapon1)} it.\n" +
-                      $"2. Put it in your inventory");
-    var i = Character.GetNumFromUser(2);
-    switch (i)
+    var weaponExists = true;
+    while (weaponExists)
     {
-        case 1:
-            Items.UseItem(you, items);
-            break;
-        case 2:
-            AttemptPickUp(items);
-            break;
+        if (weapon != null)
+        {
+            Console.WriteLine($"You find a {weapon.Name}\n" +
+                              $"1. {Items.FindVerb(weapon)} it.\n" +
+                              $"2. Put it in your inventory.\n" +
+                              $"3. Leave it.");
+            var i = Character.GetNumFromUser(3);
+            switch (i)
+            {
+                case 1:
+                    weaponExists = Inventory.AttemptPickupAndEquipWeapon(you, weapon);
+                    break;
+                case 2:
+                    weaponExists = Inventory.AttemptPickUp(you, weapon);
+                    break;
+                case 3:
+                    weapon = null;
+                    break;
+            }
+        }
     }
 
-    Character.AnyButtonToContinue();
 }
 
-void DecisionForItem(Items items, Character character)
+void DecisionForItem(Character character, Items? items)
 {
-    Console.WriteLine($"You find a {items.Name}\n" +
-                      $"1. {Items.FindVerb(items)} it.\n" +
-                      $"2. Put it in your inventory");
-    var i = Character.GetNumFromUser(2);
-    switch (i)
+    while (items != null)
     {
-        case 1:
-            Items.UseItem(character, items);
-            break;
-        case 2:
-            AttemptPickUp(items);
-            break;
-    }
+        Console.WriteLine($"You find a {items.Name}\n" +
+                          $"1. {Items.FindVerb(items)} it.\n" +
+                          $"2. Put it in your inventory.\n" +
+                          $"3. Leave it.");
+        var i = Character.GetNumFromUser(3);
+        switch (i)
+        {
+            case 1:
+                Items.UseItem(character, items);
+                items = null;
+                break;
+            case 2:
+                Inventory.AttemptPickUp(character, items);
 
-    Character.AnyButtonToContinue();
+                break;
+            case 3:
+                items = null;
+                break;
+        }
+    }
 }
 
 void ClearScreen()
 {
     Console.Clear();
-}
-
-void AttemptPickUp(object? x)
-{
-    var attempt = true;
-    var firstAvailableIndex = Array.IndexOf(you.Inventory, null);
-    var topCursorPosition = Console.CursorTop;
-    do
-    {
-        var keyInfo = Console.ReadKey();
-        if (keyInfo.Key == ConsoleKey.Enter)
-        {
-            Console.WriteLine(); // Move to the next line
-            Console.SetCursorPosition(0, topCursorPosition); // Move the cursor back to the top
-            Console.Write("No room left in your inventory."); // Overwrite the line
-        }
-        else if (firstAvailableIndex != -1)
-        {
-            you.Inventory[firstAvailableIndex] = x;
-            x = null;
-            attempt = false;
-            Console.WriteLine(); // Move to the next line
-        }
-    } while (attempt);
 }

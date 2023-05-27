@@ -50,7 +50,7 @@ public class Items
         }
     }
 
-    private static void ExperienceEffect(Character you, Items item)
+    private static void ExperienceEffect(Character you, Items? item)
     {
         you.Xp += item.Potency;
         Console.Clear();
@@ -61,7 +61,7 @@ public class Items
         }
     }
 
-    private static void HealingEffect(Character you, Items item)
+    private static void HealingEffect(Character you, Items? item)
     {
         you.Hp += item.Potency;
         if (you.Hp > you.MaxHp) you.MaxHp = you.Hp;

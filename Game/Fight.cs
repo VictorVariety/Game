@@ -23,12 +23,12 @@ public class Fight
     private static void ShowFightState(Character player, Enemy opponent)
     {
         Console.Clear();
-        var you = player.Name.PadLeft(30, ' ');
-        var yourHp = ($"Hp: {player.Hp}/{player.MaxHp}").PadLeft(15, ' ');
-        var yourLvl = ("Lvl " + player.Level).PadLeft(15, ' ');
-        var enemy = opponent.Name.PadRight(30, ' ');
-        var opponentHp = ($"Hp: {opponent.Hp}/{opponent.MaxHp}").PadRight(15, ' ');
-        var opponentLvl = ("Lvl " + opponent.Level).PadRight(15, ' ');
+        var you = player.Name.PadRight(30, ' ');
+        var yourHp = ($"Hp: {player.Hp}/{player.MaxHp}").PadRight(15, ' ');
+        var yourLvl = ("Lvl " + player.Level).PadRight(15, ' ');
+        var enemy = opponent.Name.PadLeft(30, ' ');
+        var opponentHp = ($"Hp: {opponent.Hp}/{opponent.MaxHp}").PadLeft(15, ' ');
+        var opponentLvl = ("Lvl " + opponent.Level).PadLeft(15, ' ');
         Console.WriteLine($"------------------------------------------------------------\n" + //60 length
                           $"{you}{enemy}\n" +
                           $"\n" +
@@ -54,6 +54,7 @@ public class Fight
         Console.Clear();
         Console.WriteLine($"You defeated the {opponent.Name.ToLower()}\n" +
                           $"Gained {xp} Exp");
+        Character.AnyButtonToContinue();
         if (you.Xp >= you.MaxXp) Character.LevelUp(you);
     }
 
