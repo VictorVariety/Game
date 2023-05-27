@@ -50,21 +50,26 @@ public class Items
         }
     }
 
-    private static void ExperienceEffect(Character you, Items? item)
+    private static void ExperienceEffect(Character you, Items item)
     {
         you.Xp += item.Potency;
         Console.Clear();
-        Console.WriteLine($"You gained {item.Potency}XP");
+        Console.WriteLine($"You {Items.FindVerb(item)} it and gained {item.Potency}XP");
         if (you.Xp > you.MaxXp)
         {
             Character.LevelUp(you);
         }
     }
 
-    private static void HealingEffect(Character you, Items? item)
+    private static void HealingEffect(Character you, Items item)
     {
+        Console.Clear();
+        var healthGained = you.MaxHp - you.Hp < item.Potency ? you.MaxHp - you.Hp : item.Potency;
+        Console.WriteLine(
+            $"You {Items.FindVerb(item)} it and gain {healthGained}HP");
         you.Hp += item.Potency;
         if (you.Hp > you.MaxHp) you.MaxHp = you.Hp;
+        Character.AnyButtonToContinue();
     }
 
     public static string FindVerb(object? items)

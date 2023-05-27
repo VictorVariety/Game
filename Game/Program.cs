@@ -123,16 +123,13 @@ Character CreateCharacter()
 
 void Loot(Encounters encounter)
 {
-    var weapon = encounter.Weapon;
-    var item = encounter.Item;
-    if (weapon != null)
+    if (encounter.Weapon != null)
     {
-        DecisionForWeapon(weapon);
+        DecisionForWeapon(encounter.Weapon);
     }
-
-    if (item != null)
+    if (encounter.Item != null)
     {
-        DecisionForItem(you, item);
+        DecisionForItem(encounter.Item);
     }
 
 }
@@ -142,33 +139,31 @@ void DecisionForWeapon(Weapon weapon)
     var weaponExists = true;
     while (weaponExists)
     {
-        if (weapon != null)
-        {
-            Console.WriteLine($"You find a {weapon.Name}\n" +
-                              $"1. {Items.FindVerb(weapon)} it.\n" +
-                              $"2. Put it in your inventory.\n" +
-                              $"3. Leave it.");
-            var i = Character.GetNumFromUser(3);
-            switch (i)
-            {
-                case 1:
-                    weaponExists = Inventory.AttemptPickupAndEquipWeapon(you, weapon);
-                    break;
-                case 2:
-                    weaponExists = Inventory.AttemptPickUp(you, weapon);
-                    break;
-                case 3:
-                    weapon = null;
-                    break;
-            }
+        Console.WriteLine($"You find a {weapon.Name}\n" +
+                          $"1. {Items.FindVerb(weapon)} it.\n" +
+                          $"2. Put it in your inventory.\n" +
+                          $"3. Leave it.");
+        var i = Character.GetNumFromUser(3);                                //
+        switch (i)                                                                      //New method?
+        {                                                                               //
+            case 1:
+                weaponExists = Inventory.AttemptPickupAndEquipWeapon(you, weapon);
+                break;
+            case 2:
+                weaponExists = Inventory.AttemptPickUp(you, weapon);
+                break;
+            case 3:
+                weaponExists = false;
+                break;
         }
     }
-
+    
 }
 
-void DecisionForItem(Character character, Items? items)
+void DecisionForItem(Items items)
 {
-    while (items != null)
+    var itemExists = true;
+    while (itemExists)
     {
         Console.WriteLine($"You find a {items.Name}\n" +
                           $"1. {Items.FindVerb(items)} it.\n" +
@@ -178,15 +173,14 @@ void DecisionForItem(Character character, Items? items)
         switch (i)
         {
             case 1:
-                Items.UseItem(character, items);
-                items = null;
+                Items.UseItem(you, items);
+                itemExists = false;
                 break;
             case 2:
-                Inventory.AttemptPickUp(character, items);
-
+                itemExists = Inventory.AttemptPickUp(you, items);
                 break;
             case 3:
-                items = null;
+                itemExists = false;
                 break;
         }
     }

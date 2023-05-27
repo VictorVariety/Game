@@ -41,15 +41,13 @@ public class Inventory
             {
                 Items.UseItem(you, item);
                 you.Inventory.Remove(item);
-                Console.WriteLine(
-                    $"You {Items.FindVerb(item)} it and feel {(item.Effect == "Healing" ? "healthier" : "smarter")}");
 
                 break;
             }
             case 2:
                 Console.Clear();
                 Console.WriteLine($"You dropped it");
-                you.Inventory.Remove(theItem);
+                you.Inventory.Remove(theItem!);
                 break;
             case 3:
                 return true;

@@ -123,8 +123,7 @@ public class Fight
         }
         else return 1;
     }
-
-    private static double Effectiveness(Weapon? weapon, Enemy opponent)
+    private static double Effectiveness(Weapon weapon, Enemy opponent)
     {
         double effectiveness = 1;
         if (weapon.Type == "Melee" & opponent.Type == "Magic" ||

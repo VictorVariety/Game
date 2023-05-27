@@ -34,8 +34,7 @@ public class Encounters
                 enemy = random.Next(0, 2) == 1
                     ? Enemy.GenerateGiantSpider(level)
                     : Enemy.GenerateBear(level);
-                weapon = Weapon.WeaponPool();
-                item = Items.GenerateEpicLoot();
+                item = new Random().Next(0, 4) == 0 ? Items.GenerateEpicLoot() : Items.GenerateLoot();
                 break;
 
             case 1:
@@ -58,9 +57,9 @@ public class Encounters
     public static Encounters OldBattlefield(int level)
     {
         var encounter = string.Empty;
-        Enemy enemy = null;
+        Enemy? enemy = null;
         Items? item = null;
-        Weapon weapon = null;
+        Weapon? weapon = null;
         var rnd = new Random().Next(0, 3);
         switch (rnd)
         {

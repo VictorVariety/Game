@@ -16,11 +16,11 @@ public class Character
     {
         Name = name;
         Class = classs;
-        Hp = 100;
-        MaxHp = 100;
+        Hp = 50;
+        MaxHp = 50;
         Level = 1;
         Xp = 0;
-        MaxXp = 100;
+        MaxXp = 50;
         Hand = StartingWeapon(classs);
         Inventory = new List<object>();
     }
@@ -38,11 +38,13 @@ public class Character
 
     public static void LevelUp(Character you)
     {
-        Console.WriteLine($"You leveled up! Max HP increased by 10");
         you.Level += 1;
         you.MaxHp += 10;
         you.Hp = you.MaxHp;
         you.Xp = 0 + (you.MaxXp - you.Xp);
+        you.MaxXp += 10;
+        Console.WriteLine($"You reached level {you.Level}! Max HP increased by 10, to {you.MaxHp}");
+        Character.AnyButtonToContinue();
     }
     public static int GetNumFromUser(int maxChoice)
     {

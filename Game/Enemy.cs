@@ -17,8 +17,12 @@ public class Enemy
         Level = level;
         Hp = hp;
         MaxHp = hp;
-        Strength = new Random().NextSingle() * (strengthPeak - 0.5) + 0.5;
-        Toughness = new Random().NextSingle() * (toughPeak - 0.5) + 0.5;
+
+        var levelModifier = level > 1 ? (double)level / 2 : 1;
+        var trueStrengthPeak = strengthPeak * levelModifier;
+        var trueToughPeak = toughPeak * level;
+        Strength = new Random().NextSingle() * (trueStrengthPeak - 0.5) + 0.5;
+        Toughness = new Random().NextSingle() * (trueToughPeak - 0.5) + 0.5;
     }
 
     public static Enemy GenerateGhoul(int level)
