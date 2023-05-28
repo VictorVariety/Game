@@ -43,8 +43,9 @@ public class Character
         you.Hp = you.MaxHp;
         you.Xp = 0 + (you.MaxXp - you.Xp);
         you.MaxXp += 10;
+        Console.Clear();
         Console.WriteLine($"You reached level {you.Level}! Max HP increased by 10, to {you.MaxHp}");
-        Character.AnyButtonToContinue();
+        AnyButtonToContinue();
     }
     public static int GetNumFromUser(int maxChoice)
     {

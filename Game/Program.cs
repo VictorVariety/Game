@@ -1,11 +1,7 @@
 ﻿using System.Runtime.InteropServices.ComTypes;
 using Game;
 
-Character you = null!;
-while (you == null)
-{
-    you = CreateCharacter();
-}
+var you = CreateCharacter();
 
 var running = true;
 while (running)
@@ -18,8 +14,9 @@ void MainMenu()
     Console.WriteLine($"What next?\n" +
                       $"1. Look for adventures\n" +
                       $"2. Open inventory\n" +
-                      $"3. Retire");
-    var num = Character.GetNumFromUser(3);
+                      $"3. Show stats\n" +
+                      $"4. Retire");
+    var num = Character.GetNumFromUser(4);
     switch (num)
     {
         case 1: 
@@ -29,6 +26,9 @@ void MainMenu()
             Inventory.OpenInventory(you);
             break;
         case 3:
+            Menu.ShowCharacter(you);
+            break;
+        case 4:
             running = false;
             break;
     }
@@ -45,16 +45,13 @@ void Adventure()
     {
         case 1:
             encounter = Encounters.Forest(you.Level);
-
             ShowEncounterText(encounter);
             FightAndLoot(encounter);
-
             break;
         case 2:
             encounter = Encounters.OldBattlefield(you.Level);
             ShowEncounterText(encounter);
             FightAndLoot(encounter);
-
             break;
     }
 }

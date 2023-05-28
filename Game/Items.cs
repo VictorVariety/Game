@@ -17,10 +17,10 @@ public class Items
     {
         var loot = new List<Items>
         {
-            new Items("Minor Health Potion", "Healing", 25),
+            new Items("Bandage", "Healing", 25),
             new Items("Health Potion", "Healing", 50),
-            new Items("Minor Scroll", "Experience", 25),
-            new Items("Scroll", "Experience", 50),
+            new Items("Scroll", "Experience", 25),
+            new Items("Book", "Experience", 50),
         };
         return loot[new Random().Next(0, loot.Count)];
     }
@@ -28,8 +28,8 @@ public class Items
     {
         var loot = new List<Items>
         {
-            new Items("Major Health Potion", "Healing", 75),
-            new Items("Major Scroll", "Experience", 75),
+            new Items("First Aid Kit", "Healing", 75),
+            new Items("Great Book", "Experience", 75),
         };
         return loot[new Random().Next(0, loot.Count)];
     }
@@ -55,7 +55,7 @@ public class Items
         you.Xp += item.Potency;
         Console.Clear();
         Console.WriteLine($"You {Items.FindVerb(item)} it and gained {item.Potency}XP");
-        if (you.Xp > you.MaxXp)
+        if (you.Xp >= you.MaxXp)
         {
             Character.LevelUp(you);
         }
@@ -68,7 +68,7 @@ public class Items
         Console.WriteLine(
             $"You {Items.FindVerb(item)} it and gain {healthGained}HP");
         you.Hp += item.Potency;
-        if (you.Hp > you.MaxHp) you.MaxHp = you.Hp;
+        if (you.Hp > you.MaxHp) you.Hp = you.MaxHp;
         Character.AnyButtonToContinue();
     }
 

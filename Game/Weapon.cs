@@ -15,18 +15,18 @@ public class Weapon
 
     public static Weapon WeaponPool()
     {
-        string[] names = { "Rusty Sword", "Iron Sword", "Basic Staff", "Forest Staff", "Wool Shear", "Iron Dagger" };
+        string[] names = { "Rusty Sword", "Iron Sword", "Basic Staff", "Wizard Staff", "Rusty Knife", "Iron Dagger" };
         string[] types = { "Melee", "Melee", "Magic", "Magic", "Deceit", "Deceit" };
-        int[] powers = { 2, 4, 2, 4, 2, 4 };
+        int[] powers = { 2, 3, 2, 3, 2, 3 };
         var random = new Random().Next(0, names.Length);
 
         return new Weapon(names[random], types[random], powers[random]);
     }
     public static Weapon RareWeaponPool()
     {
-        string[] names = { "Steel Sword", "Ebony Sword", "Dragon Staff", "Staff of Duality", "Steel Dagger", "Ebony Dagger" };
+        string[] names = { "Steel Sword", "Ebony Sword", "Dragon Staff", "Staff of Cosmos", "Steel Dagger", "Ebony Dagger" };
         string[] types = { "Melee", "Melee", "Magic", "Magic", "Deceit", "Deceit" };
-        int[] powers = { 7, 10, 7, 10, 7, 10 };
+        int[] powers = { 5, 8, 5, 8, 5, 8 };
         var random = new Random().Next(0, names.Length);
 
         return new Weapon(names[random], types[random], powers[random]);

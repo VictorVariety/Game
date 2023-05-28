@@ -7,10 +7,10 @@ public class Inventory
         var viewInventory = true;
         while (viewInventory)
         {
-            var count = ShowAllInventory(you);
-            var choice = Character.GetNumFromUser(count);
+            Menu.ShowInventory(you);
+            var choice = Character.GetNumFromUser(5);
 
-            if (ChoseExitInventory(choice, count, ref viewInventory)) continue;
+            if (ChoseExitInventory(choice, ref viewInventory)) continue;
             if (ItemDecision(you, choice)) continue;
 
             Character.AnyButtonToContinue();
@@ -56,15 +56,12 @@ public class Inventory
         return false;
     }
 
-    private static bool ChoseExitInventory(int choice, int count, ref bool viewInventory)
+    private static bool ChoseExitInventory(int choice, ref bool viewInventory)
     {
-        if (choice == count)
-        {
-            viewInventory = false;
-            return true;
-        }
+        if (choice != 5) return false;
+        viewInventory = false;
+        return true;
 
-        return false;
     }
 
     private static int ShowAllInventory(Character you)
@@ -138,9 +135,10 @@ public class Inventory
 
         return theItem;
     }
-    private static object? FindNameOfItemsOrWeapon(object? theItem)
+
+    public static string? FindNameOfItemsOrWeapon(object? theItem)
     {
-        if (theItem is Items items) //Hvis theItem er Items, cast den til en Items som items
+        if (theItem is Items items) //Hvis theItem er av Items klassen, cast den til en av Items som "items"
         {
             return items.Name;
         }
