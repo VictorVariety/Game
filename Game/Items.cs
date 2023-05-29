@@ -17,7 +17,7 @@ public class Items
     {
         var loot = new List<Items>
         {
-            new Items("Bandage", "Healing", 25),
+            new Items("Holy Water", "Healing", 25),
             new Items("Health Potion", "Healing", 50),
             new Items("Scroll", "Experience", 25),
             new Items("Book", "Experience", 50),
@@ -28,7 +28,7 @@ public class Items
     {
         var loot = new List<Items>
         {
-            new Items("First Aid Kit", "Healing", 75),
+            new Items("Potion of Youth", "Healing", 75),
             new Items("Great Book", "Experience", 75),
         };
         return loot[new Random().Next(0, loot.Count)];

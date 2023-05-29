@@ -11,6 +11,7 @@ public class Inventory
             var choice = Character.GetNumFromUser(5);
 
             if (ChoseExitInventory(choice, ref viewInventory)) continue;
+            if (you.Inventory.Count < choice) continue;
             if (ItemDecision(you, choice)) continue;
 
             Character.AnyButtonToContinue();
@@ -26,7 +27,7 @@ public class Inventory
 
         Console.WriteLine($"1. {Items.FindVerb(theItem)}.\n" +
                           $"2. Drop.\n" +
-                          $"3. back.");
+                          $"3. Back.");
         var decision = Character.GetNumFromUser(3);
         Console.Clear();
         switch (decision)
@@ -62,21 +63,6 @@ public class Inventory
         viewInventory = false;
         return true;
 
-    }
-
-    private static int ShowAllInventory(Character you)
-    {
-        Console.Clear();
-        var count = 0;
-        foreach (var item in you.Inventory)
-        {
-            count++;
-            Console.WriteLine($"{count}. [ {FindNameOfItemsOrWeapon(item)} ]");
-        }
-
-        count += 1;
-        Console.WriteLine($"{count}. Back");
-        return count;
     }
 
     public static bool AttemptPickupAndEquipWeapon(Character you, Weapon weapon)
