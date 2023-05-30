@@ -46,7 +46,7 @@ public class Encounters
 
             case 2:
                 encounter = "You find an empty camp, and of course you loot it.";
-                item = Game.Items.GenerateLoot();
+                item = Items.GenerateLoot();
                 if (random.Next(0, 2) == 1) weapon = Weapon.WeaponPool();
                 break;
         }
@@ -72,12 +72,12 @@ public class Encounters
             case 1:
                 encounter = "It's getting dark, and something is watching you..";
                 enemy = Enemy.GenerateGhost(level);
-                item = Game.Items.GenerateLoot();
+                item = Items.GenerateLoot();
                 break;
             case 2:
                 encounter = "You find what looks like the remnants of a commander tent, \n" +
                             "there might be something valuable here.";
-                item = Game.Items.GenerateLoot();
+                item = Items.GenerateLoot();
                 weapon = Weapon.RareWeaponPool();
                 break;
         }

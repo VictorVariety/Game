@@ -36,6 +36,55 @@ public class Character
         };
     }
 
+    public static Character CreateCharacter()
+    {
+        string? name;
+        do
+        {
+            Console.Clear();
+            Console.WriteLine("What's your name?");
+            name = Console.ReadLine();
+        } while (string.IsNullOrWhiteSpace(name));
+
+        var classCheck = true;
+        var type = "";
+        while (classCheck)
+        {
+            Console.Clear();
+            Console.WriteLine($"{name} the\n" +
+                              $"1. Warrior.\n" +
+                              $"2. Mage.\n" +
+                              $"3. Rogue."
+            );
+            var choice = Character.GetNumFromUser(3);
+            switch (choice)
+            {
+                case 1:
+                    type = "Warrior";
+                    classCheck = false;
+                    break;
+                case 2:
+                    type = "Mage";
+                    classCheck = false;
+                    break;
+                case 3:
+                    type = "Rogue";
+                    classCheck = false;
+                    break;
+                default:
+                    Console.WriteLine("Invalid input");
+                    break;
+            }
+
+            Console.Clear();
+        }
+
+        Console.WriteLine($"You are {name} the {type}\n");
+        Console.WriteLine($"Your adventure starts");
+        Character.AnyButtonToContinue();
+        return new Character(name, type);
+    }
+
     public static void LevelUp(Character you)
     {
         you.Level += 1;
