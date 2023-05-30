@@ -10,20 +10,32 @@ public class Fight
     public static void Combat(Character you, Enemy opponent)
     {
         _ongoing = true;
+        _fledFight = false;
         while (_ongoing)
         {
             ShowFightState(you, opponent);
             ShowMoves();
-            _fledFight = MakeAMove(you, opponent);
+            MakeAMove(you, opponent);
 
-            if (opponent.Hp >= 1 && you.Hp >= 1) continue;
+            if (_fledFight)
+            {
+                FleeFight();
+                continue;
+            }
+
+            if (opponent.Hp >= 1) continue;
             _ongoing = false;
-            break;
-
+            PostFight(you, opponent);
         }
-        if(_fledFight)PostFight(you, opponent);
     }
 
+    private static void FleeFight()
+    {
+        Console.Clear();
+        Console.WriteLine("You flee the scene.");
+        Character.AnyButtonToContinue();
+        _ongoing = false;
+    }
 
 
     private static void ShowFightState(Character player, Enemy opponent)
@@ -55,7 +67,7 @@ public class Fight
     private static void PostFight(Character you, Enemy opponent)
     {
         var xp = (int)Math.Floor(opponent.Level * 5 +
-                                 (opponent.MaxHp * 2) / 4 * 
+                                 opponent.MaxHp * 2 / 4 * 
                                  opponent.Toughness * opponent.Strength);
         you.Xp += xp;
         Console.Clear();
@@ -67,19 +79,19 @@ public class Fight
     }
 
 
-    private static bool MakeAMove(Character you, Enemy opponent)
+    private static void MakeAMove(Character you, Enemy opponent)
     {
         var choice = Character.GetNumFromUser(2);
         switch (choice)
         {
             case 1:
                 DealDamage(you, opponent);
-                return false;
+                if (you.Hp < 1) Menu.GameOver();
+                break;
             case 2:
-                _ongoing = false;
-                return true;
+                _fledFight = true;
+                break;
         }
-        return false;
     }
 
     private static void DealDamage(Character you, Enemy opponent)

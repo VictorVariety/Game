@@ -10,7 +10,8 @@ public class Menu
     public static void MainMenu(Character you)
     {
         Console.Clear();
-        Console.WriteLine($"What next?\n" +
+        Console.WriteLine($"      What next?" +
+                          $"\n \n" +
                           $"1. Look for adventures\n" +
                           $"2. Open inventory\n" +
                           $"3. Show stats\n" +
@@ -56,7 +57,7 @@ public class Menu
 ⠀⠀⠀⠀⢹⣿⣿⣇⠀⠀⢀⣠⣴⣿⣿⣿⡿⠀⠈⣿⣿⣿⣿⡟⠀⠀⠀⢰⣿⣿⣿⠿⠟⠛⠉⠁⠸⢿⡟⠀⠀⠀⠀⠀⠀⠀⠘⠋⠁⠀⠀
 ⠀⠀⠀⠀⠈⢻⣿⣿⣿⣾⣿⣿⣿⣿⣿⠟⠁⠀⠀⠸⣿⣿⡿⠁⠀⠀⠀⠈⠙⠛⠃⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
 ⠀⠀⠀⠀⠀⠀⠉⠛⠿⠿⠿⠿⠟⠋⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀");
-        Console.ReadLine();
+        Character.AnyButtonToContinue();
         return false;
     }
     public static void ShowCharacter(Character you)
@@ -99,7 +100,7 @@ public class Menu
         const int slotWidth = 15;
         const int boxWidth = 17;
         const char horizontalLine = '─';
-        const char verticalLine = '│';
+        const char verticalLines = '│';
         const char cornerTopLeft = '┌';
         const char cornerTopRight = '┐';
         const char cornerBottomLeft = '└';
@@ -110,6 +111,7 @@ public class Menu
         const char mergingCornerBottom = '┴';
         const char mergingCornerMiddle  = '┼';
         const string emptySlot = "Empty";
+        var horizontalLines = new string(horizontalLine, boxWidth);
 
         var object1 = you.Inventory.Count > 0 ? Inventory.FindNameOfItemsOrWeapon(you.Inventory[0]) : emptySlot;
         var object2 = you.Inventory.Count > 1 ? Inventory.FindNameOfItemsOrWeapon(you.Inventory[1]) : emptySlot;
@@ -124,11 +126,11 @@ public class Menu
         var count = you.Inventory.Count;
 
         Console.Clear();
-        Console.WriteLine($"{cornerTopLeft}{new string(horizontalLine, boxWidth)}{mergingCornerTop}{new string(horizontalLine, boxWidth)}{cornerTopRight}");
-        Console.WriteLine($"{verticalLine}1.{slot1}{verticalLine}2.{slot2}{verticalLine}");
-        Console.WriteLine($"{mergingCornerLeft}{new string(horizontalLine, boxWidth)}{mergingCornerMiddle}{new string(horizontalLine, boxWidth)}{mergingCornerRight}");
-        Console.WriteLine($"{verticalLine}3.{slot3}{verticalLine}4.{slot4}{verticalLine}");
-        Console.WriteLine($"{cornerBottomLeft}{new string(horizontalLine, boxWidth)}{mergingCornerBottom}{new string(horizontalLine, boxWidth)}{cornerBottomRight}");
+        Console.WriteLine($"{cornerTopLeft}{horizontalLines}{mergingCornerTop}{horizontalLines}{cornerTopRight}");
+        Console.WriteLine($"{verticalLines}1.{slot1}{verticalLines}2.{slot2}{verticalLines}");
+        Console.WriteLine($"{mergingCornerLeft}{horizontalLines}{mergingCornerMiddle}{horizontalLines}{mergingCornerRight}");
+        Console.WriteLine($"{verticalLines}3.{slot3}{verticalLines}4.{slot4}{verticalLines}");
+        Console.WriteLine($"{cornerBottomLeft}{horizontalLines}{mergingCornerBottom}{horizontalLines}{cornerBottomRight}");
         Console.WriteLine($"5. Exit");
         return count;
     }
@@ -141,11 +143,11 @@ public class Menu
 
     private static string GetProgressBar(int current, int max)
     {
-        int percentage = (int)((double)current / max * 100);
-        int filledBlocks = percentage / 5;
-        int emptyBlocks = 20 - filledBlocks;
+        var percentage = (int)((double)current / max * 100);
+        var filledBlocks = percentage / 5;
+        var emptyBlocks = 20 - filledBlocks;
 
-        string progressBar = new string('█', filledBlocks);
+        var progressBar = new string('█', filledBlocks);
         progressBar += new string(' ', emptyBlocks);
 
         return progressBar;

@@ -47,7 +47,7 @@ public class RunGame
         }
     }
 
-    static void ShowEncounterText(Encounters encounters)
+    private static void ShowEncounterText(Encounters encounters)
     {
         Console.WriteLine($"You arrive in {encounters.Name}\n\n" +
                           $"{encounters.EncounterText}");
@@ -57,12 +57,14 @@ public class RunGame
     static void FightAndLoot(Character you, Encounters encounters)
     {
         if (encounters.Enemy != null) Fight.Combat(you, encounters.Enemy);
-        if (you.Hp < 1) return;
+
+        if (encounters.Enemy != null && encounters.Enemy.Hp > 0) return;
+
         if (encounters.Item != null || encounters.Weapon != null) Loot(you, encounters);
     }
 
 
-    static void Loot(Character you, Encounters encounter)
+    private static void Loot(Character you, Encounters encounter)
     {
         if (encounter.Weapon != null)
         {
@@ -75,7 +77,7 @@ public class RunGame
 
     }
 
-    static void DecisionForWeapon(Character you, Weapon weapon)
+    private static void DecisionForWeapon(Character you, Weapon weapon)
     {
         var weaponExists = true;
         while (weaponExists)
@@ -101,7 +103,7 @@ public class RunGame
 
     }
 
-    static void DecisionForItem(Character you, Items items)
+    private static void DecisionForItem(Character you, Items items)
     {
         var itemExists = true;
         while (itemExists)
