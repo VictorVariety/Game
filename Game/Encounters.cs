@@ -1,4 +1,6 @@
-﻿namespace Game;
+﻿using System;
+
+namespace Game;
 
 public class Encounters
 {
@@ -34,7 +36,9 @@ public class Encounters
                 enemy = random.Next(0, 2) == 1
                     ? Enemy.GenerateGiantSpider(level)
                     : Enemy.GenerateBear(level);
-                item = new Random().Next(0, 4) == 0 ? Items.GenerateEpicLoot() : Items.GenerateLoot();
+                item = new Random().Next(0, 2) == 0 
+                    ? Items.GenerateEpicLoot() 
+                    : Items.GenerateLoot();
                 break;
 
             case 1:
@@ -72,7 +76,7 @@ public class Encounters
             case 1:
                 encounter = "It's getting dark, and something is watching you..";
                 enemy = Enemy.GenerateGhost(level);
-                item = Items.GenerateLoot();
+                if(new Random().Next(0, 2) == 1) item = Items.GenerateLoot();
                 break;
             case 2:
                 encounter = "You find what looks like the remnants of a commander tent, \n" +
@@ -82,6 +86,6 @@ public class Encounters
                 break;
         }
 
-        return new Encounters("the forest", encounter, enemy, item, weapon);
+        return new Encounters("the old battlefield", encounter, enemy, item, weapon);
     }
 }
